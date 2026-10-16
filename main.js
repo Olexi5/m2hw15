@@ -16,10 +16,10 @@ input.addEventListener(
       },
     })
       .then((response) => response.json())
-      .then(
-        (response) =>
-          (container.innerHTML =
-            render(response) || "<li>No countries available</li>"),
+      .then((response) =>
+        //   (container.innerHTML =
+        //     render(response) || "<li>No countries available</li>"),
+        console.log(response),
       );
   }, 500)
 );
