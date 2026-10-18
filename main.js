@@ -6,6 +6,16 @@ function render(counts) {
     .map((country) => `<li>${country.names.common}</li>`)
     .join("");
 }
+function renderInfo(country) {
+  container.innerHTML = "";
+  return `<h2>${country.names.common}</h2>
+    <img src="${country.flag.url_png}" alt="" />
+    <ul>
+      <li>Capital: ${country.capitals.map((capital) => `<p>${capital.name}</p>`).join("")}</li>
+      <li>Population: ${country.population}</li>
+      <li>Languages: <ul>${country.languages.map((lang) => `<li>${lang.name}</li>`).join("")}</ul></li>
+    </ul>`;
+}
 input.addEventListener(
   "input",
   _.debounce(() => {
@@ -16,9 +26,13 @@ input.addEventListener(
       },
     })
       .then((response) => response.json())
-      .then((response) =>
-          (container.innerHTML =
-            render(response) || "<li>No countries available</li>"),
-      );
-  }, 500)
+      .then((response) => {
+        if (response.data.objects.length !== 1) {
+          container.innerHTML =
+            render(response) || "<li>No countries available</li>";
+        } else {
+          container.innerHTML = renderInfo(response.data.objects[0]);
+        }
+      });
+  }, 500),
 );
